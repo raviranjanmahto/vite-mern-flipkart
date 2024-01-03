@@ -11,23 +11,24 @@ const Wrapper = styled(Box)`
     font-size: 16px;
     align-items: center;
   }
-`;
-
-const LoginButton = styled(Button)`
-  color: #2874f0;
-  background: #fff;
-  text-transform: none;
-  padding: 5px 40px;
-  border-radius: 2px;
-  box-shadow: none;
-  font-weight: 600;
-  height: 32px;
+  .btnLogin {
+    color: #2874f0;
+    background: #fff;
+    text-transform: none;
+    padding: 5px 40px;
+    border-radius: 2px;
+    box-shadow: none;
+    font-weight: 600;
+    height: 32px;
+  }
 `;
 
 const CustomButton = () => {
   return (
     <Wrapper>
-      <LoginButton variant='contained'>Login</LoginButton>
+      <Button variant='contained' className='btnLogin'>
+        Login
+      </Button>
       <Typography style={{ marginTop: 3, width: 135 }}>
         Become a Seller
       </Typography>

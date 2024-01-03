@@ -5,23 +5,20 @@ import CustomButton from "./CustomButton";
 const StyledHeader = styled(AppBar)`
   background: #2874f0;
   height: 55px;
+  .component {
+    margin-left: 12%;
+    line-height: 0;
+  }
+  .subHeading {
+    font-size: 10px;
+    font-style: italic;
+  }
+  .imgSubHeading {
+    width: 10px;
+    height: 10px;
+    margin-left: 4px;
+  }
 `;
-
-const Component = styled(Box)`
-  margin-left: 12%;
-  line-height: 0;
-`;
-
-const SubHeading = styled(Typography)`
-  font-size: 10px;
-  font-style: italic;
-`;
-
-const SubImage = styled("img")({
-  width: 10,
-  height: 10,
-  marginLeft: 4,
-});
 
 const Header = () => {
   const logoURL =
@@ -32,18 +29,18 @@ const Header = () => {
   return (
     <StyledHeader>
       <Toolbar style={{ minHeight: 55 }}>
-        <Component>
+        <Box className='component'>
           <img src={logoURL} alt='logo' style={{ width: 75 }} />
           <Box style={{ display: "flex" }}>
-            <SubHeading>
+            <Typography className='subHeading'>
               Explore&nbsp;
               <Box component='span' style={{ color: "#ffe500" }}>
                 Plus
               </Box>
-            </SubHeading>
-            <SubImage src={subURL} alt='sub logo' />
+            </Typography>
+            <img className='imgSubHeading' src={subURL} alt='sub logo' />
           </Box>
-        </Component>
+        </Box>
         <Search />
         <Box style={{ margin: "0 5% 0 auto" }}>
           <CustomButton />
