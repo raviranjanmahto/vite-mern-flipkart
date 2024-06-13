@@ -14,12 +14,13 @@ app.use(express.json({ limit: "10kb" }));
 // Serving static file
 app.use(express.static(path.join(__dirname, "../client/dist")));
 
-if (!process.env.DATABASE_URI)
-  return console.log("Please provide Database Env");
+if (!process.env.DATABASE_URI) console.log("Please provide Database Env");
 mongoose
   .connect(process.env.DATABASE_URI)
   .then(() => console.log(`Database connected successful🥰💚🥰`))
-  .catch(() => console.log(`Error connecting database 🎇💣💣💣🎇`));
+  .catch(err =>
+    console.log(`Error connecting database 🎇💣💣💣🎇=>`, err.message)
+  );
 
 app.use("/api/v1/auth", authRoutes);
 
