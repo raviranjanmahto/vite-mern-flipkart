@@ -1,5 +1,6 @@
 .vscode/*
-node_modules
+node_modules/*
 .env
 default.js
 data.js
+dist/*
