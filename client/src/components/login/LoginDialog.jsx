@@ -8,6 +8,8 @@ import {
 } from "@mui/material";
 import { useState } from "react";
 import customFetch from "../../utils/customFetch";
+import { toast } from "react-toastify";
+import { useAppContext } from "../../context/AppContext";
 
 const Component = styled(Box)`
   height: 70vh;
@@ -68,20 +70,41 @@ const LoginDialog = ({ open, setOpen }) => {
   const [toggle, setToggle] = useState(true);
   const [data, setData] = useState(initialSignup);
 
+  const { setAccount } = useAppContext();
+
   const handleClose = () => {
     setOpen(false);
     setToggle(true);
   };
 
   const handleChange = e => {
+    e.preventDefault();
+    setData({ ...data, [e.target.name]: e.target.value });
+  };
+
+  const handleLoginChange = e => {
     setData({ ...data, [e.target.name]: e.target.value });
   };
 
   const handleSignUp = async () => {
     try {
       await customFetch.post("/auth/signup", data);
+      toast.success("Signup successful");
+      setOpen(false);
+      setAccount(data?.fName);
     } catch (error) {
-      console.log(error?.response?.data?.message);
+      toast.error(error?.response?.data?.message);
+    }
+  };
+
+  const handleLogin = async () => {
+    try {
+      await customFetch.post("/auth/login", data);
+      toast.success("Login successful");
+      setOpen(false);
+      setAccount(data?.fName);
+    } catch (error) {
+      toast.error(error?.response?.data?.message);
     }
   };
 
@@ -105,33 +128,38 @@ const LoginDialog = ({ open, setOpen }) => {
           </Typography>
         </Box>
         {toggle ? (
-          <Box className='lgnText'>
-            <TextField variant='standard' label='Enter Email/Mobile number' />
+          <Box className='lgnText' onChange={handleLoginChange}>
+            <TextField
+              variant='standard'
+              name='email'
+              required
+              label='Enter Email/Mobile number'
+            />
             <TextField
               variant='standard'
               name='password'
               type='password'
+              required
               label='Enter Password'
             />
             <Typography className='text'>
               By continuing, you agree to Flipkart&apos;s Terms of Use and
               Privacy Policy.
             </Typography>
-            <Button className='btnLogin'>Login</Button>
+            <Button className='btnLogin' onClick={handleLogin}>
+              Login
+            </Button>
             <Typography style={{ textAlign: "center" }}>OR</Typography>
             <Typography className='createAcc' onClick={() => setToggle(false)}>
               New to Flipkart? Create an account
             </Typography>
           </Box>
         ) : (
-          <Box
-            className='lgnText'
-            onChange={handleChange}
-            onClick={handleSignUp}
-          >
+          <Box className='lgnText' onChange={handleChange}>
             <TextField
               variant='standard'
               name='fName'
+              required
               label='Enter First name'
             />
             <TextField
@@ -139,15 +167,23 @@ const LoginDialog = ({ open, setOpen }) => {
               name='lName'
               label='Enter Last name'
             />
-            <TextField variant='standard' name='email' label='Enter Email' />
+            <TextField
+              variant='standard'
+              name='email'
+              label='Enter Email'
+              required
+            />
             <TextField
               variant='standard'
               name='password'
               type='password'
               label='Enter Password'
+              required
             />
 
-            <Button className='btnLogin'>Continue</Button>
+            <Button className='btnLogin' onClick={handleSignUp}>
+              Continue
+            </Button>
             <Typography style={{ textAlign: "center" }}>OR</Typography>
             <Typography className='createAcc' onClick={() => setToggle(true)}>
               Existing User? Log in

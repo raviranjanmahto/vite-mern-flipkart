@@ -2,6 +2,8 @@ import { Box, Button, Typography, styled } from "@mui/material";
 import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
 import LoginDialog from "../login/loginDialog";
 import { useState } from "react";
+import { useAppContext } from "../../context/AppContext";
+import Profile from "./Profile";
 
 const Wrapper = styled(Box)`
   display: flex;
@@ -27,6 +29,7 @@ const Wrapper = styled(Box)`
 
 const CustomButton = () => {
   const [open, setOpen] = useState(false);
+  const { account, setAccount } = useAppContext();
 
   const handleToggle = () => {
     setOpen(true);
@@ -34,9 +37,14 @@ const CustomButton = () => {
 
   return (
     <Wrapper>
-      <Button variant='contained' className='btnLogin' onClick={handleToggle}>
-        Login
-      </Button>
+      {account ? (
+        <Profile account={account} setAccount={setAccount} />
+      ) : (
+        <Button variant='contained' className='btnLogin' onClick={handleToggle}>
+          Login
+        </Button>
+      )}
+
       <Typography style={{ marginTop: 3, width: 135 }}>
         Become a Seller
       </Typography>
