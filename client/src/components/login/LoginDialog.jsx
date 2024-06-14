@@ -94,7 +94,8 @@ const LoginDialog = ({ open, setOpen }) => {
 
   const handleSignUp = async () => {
     try {
-      await signupUser(data).unwrap();
+      const { user } = await signupUser(data).unwrap();
+      dispatch(setUser(user));
       toast.success("Signup successful");
       setOpen(false);
       setAccount(data?.fName);
@@ -105,11 +106,11 @@ const LoginDialog = ({ open, setOpen }) => {
 
   const handleLogin = async () => {
     try {
-      const res = await loginUser(data).unwrap();
-      dispatch(setUser(res?.user));
+      const { user } = await loginUser(data).unwrap();
+      dispatch(setUser(user));
       toast.success("Login successful");
       setOpen(false);
-      setAccount(res?.user?.fName);
+      setAccount(user?.fName);
     } catch (error) {
       toast.error(error?.data?.message);
     }
