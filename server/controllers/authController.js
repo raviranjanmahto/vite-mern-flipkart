@@ -2,10 +2,6 @@ const User = require("../model/userModel");
 const AppError = require("../utils/appError");
 const catchAsync = require("../utils/catchAsync");
 
-exports.ping = catchAsync(async (req, res, next) => {
-  res.status(200).json({ status: "success", message: "pong" });
-});
-
 exports.signup = catchAsync(async (req, res, next) => {
   const { email, fName, lName, password } = req.body;
   if (!email || !fName || !password)
@@ -24,7 +20,9 @@ exports.login = catchAsync(async (req, res, next) => {
   if (!email || !password)
     return next(new AppError("All fields are required!"));
 
-  const user = await User.findOne({ email });
+  const user = await User.findOne({ email }).select("+password");
+  if (!user || user.password !== password)
+    return next(new AppError("Invalid email or password", 400));
   user.password = undefined;
-  res.status(201).json({ status: "success", user });
+  res.status(200).json({ status: "success", user });
 });
