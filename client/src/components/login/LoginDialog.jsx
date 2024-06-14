@@ -7,9 +7,12 @@ import {
   styled,
 } from "@mui/material";
 import { useState } from "react";
-import customFetch from "../../utils/customFetch";
 import { toast } from "react-toastify";
 import { useAppContext } from "../../context/AppContext";
+import { useLoginUserMutation } from "../../api/userApi";
+import { useSignupUserMutation } from "../../api/userApi";
+import { useDispatch } from "react-redux";
+import { setUser } from "../../features/users/userSlice";
 
 const Component = styled(Box)`
   height: 70vh;
@@ -69,8 +72,11 @@ const initialSignup = {
 const LoginDialog = ({ open, setOpen }) => {
   const [toggle, setToggle] = useState(true);
   const [data, setData] = useState(initialSignup);
+  const [loginUser, { isLoading: isLoggingLoading }] = useLoginUserMutation();
+  const [signupUser, { isLoading: isSignupLoading }] = useSignupUserMutation();
 
   const { setAccount } = useAppContext();
+  const dispatch = useDispatch();
 
   const handleClose = () => {
     setOpen(false);
@@ -88,23 +94,24 @@ const LoginDialog = ({ open, setOpen }) => {
 
   const handleSignUp = async () => {
     try {
-      await customFetch.post("/auth/signup", data);
+      await signupUser(data).unwrap();
       toast.success("Signup successful");
       setOpen(false);
       setAccount(data?.fName);
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.data?.message);
     }
   };
 
   const handleLogin = async () => {
     try {
-      await customFetch.post("/auth/login", data);
+      const res = await loginUser(data).unwrap();
+      dispatch(setUser(res?.user));
       toast.success("Login successful");
       setOpen(false);
-      setAccount(data?.fName);
+      setAccount(res?.user?.fName);
     } catch (error) {
-      toast.error(error?.response?.data?.message);
+      toast.error(error?.data?.message);
     }
   };
 
@@ -146,7 +153,11 @@ const LoginDialog = ({ open, setOpen }) => {
               By continuing, you agree to Flipkart&apos;s Terms of Use and
               Privacy Policy.
             </Typography>
-            <Button className='btnLogin' onClick={handleLogin}>
+            <Button
+              className='btnLogin'
+              disabled={isLoggingLoading}
+              onClick={handleLogin}
+            >
               Login
             </Button>
             <Typography style={{ textAlign: "center" }}>OR</Typography>
@@ -181,7 +192,11 @@ const LoginDialog = ({ open, setOpen }) => {
               required
             />
 
-            <Button className='btnLogin' onClick={handleSignUp}>
+            <Button
+              className='btnLogin'
+              disabled={isSignupLoading}
+              onClick={handleSignUp}
+            >
               Continue
             </Button>
             <Typography style={{ textAlign: "center" }}>OR</Typography>
