@@ -1,8 +1,10 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
+const API_URL = "https://raviranjan-flipkart-server.vercel.app";
+
 export const userApi = createApi({
   reducerPath: "userApi",
-  baseQuery: fetchBaseQuery({ baseUrl: "/api/v1/auth" }),
+  baseQuery: fetchBaseQuery({ baseUrl: `${API_URL}/api/v1/auth` }),
   endpoints: builder => ({
     loginUser: builder.mutation({
       query: credentials => ({
