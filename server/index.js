@@ -8,6 +8,7 @@ const authRoutes = require("./routes/userRoute");
 const productRoutes = require("./routes/productRoutes");
 const errorGlobalMiddleware = require("./middlewares/errorMiddleware");
 const AppError = require("./utils/appError");
+const dbConnect = require("./config/dbConnect");
 
 const port = process.env.PORT || 7007;
 
@@ -16,18 +17,13 @@ const app = express();
 app.use(express.json({ limit: "10kb" }));
 
 // Serving static file
-app.use(express.static(path.join(__dirname, "../client/dist")));
+app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 
 // Development APIs logging middleware
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
-if (!process.env.DATABASE_URI) console.log("Please provide Database Env");
-mongoose
-  .connect(process.env.DATABASE_URI)
-  .then(() => console.log(`Database connected successful🥰💚🥰`))
-  .catch(err =>
-    console.log(`Error connecting database 🎇💣💣💣🎇=>`, err.message)
-  );
+// Database connection
+dbConnect(process.env.DATABASE_URI);
 
 // health check
 app.get("/api/v1/ping", (req, res) => {
@@ -39,7 +35,7 @@ app.use("/api/v1/product", productRoutes);
 
 // Serve frontend for any other route
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+  res.sendFile(path.join(__dirname, "..", "client", "dist", "index.html"));
 });
 
 // 404 error handler for all other routes
