@@ -27,7 +27,11 @@ const Banner = () => {
     >
       {bannerData.map((item, i) => (
         <Box key={i}>
-          <img src={item.url} alt='banner' />
+          <img
+            style={{ width: "100%", height: "300px" }}
+            src={item.url}
+            alt='banner'
+          />
         </Box>
       ))}
     </Carousel>
