@@ -36,8 +36,10 @@ if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 dbConnect(process.env.DATABASE_URI);
 
 // health check
-app.get("/api/v1/ping", (req, res) => {
-  res.status(200).json({ status: "success", message: "pong" });
+app.get("/", (req, res) => {
+  res
+    .status(200)
+    .json({ status: "success", message: "Server is listening..." });
 });
 
 app.use("/api/v1/auth", authRoutes);
