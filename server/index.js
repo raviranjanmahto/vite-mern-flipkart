@@ -12,11 +12,21 @@ const dbConnect = require("./config/dbConnect");
 const port = process.env.PORT || 7007;
 
 const app = express();
+
+// Allow requests from specific origins (replace with your Netlify domain)
+const corsOptions = {
+  origin: "https://raviranjan-flipkart.vercel.app",
+  methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+};
+
+app.use(cors(corsOptions));
+
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
 
 // Serving static file
-app.use(express.static(path.join(__dirname, "client")));
+app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 
 // Development APIs logging middleware
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
@@ -34,7 +44,7 @@ app.use("/api/v1/product", productRoutes);
 
 // Serve frontend for any other route
 app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "client", "index.html"));
+  res.sendFile(path.join(__dirname, "..", "client", "dist", "index.html"));
 });
 
 // 404 error handler for all other routes
