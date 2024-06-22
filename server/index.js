@@ -21,13 +21,14 @@ const corsOptions = {
   allowedHeaders: ["Content-Type", "Authorization"],
 };
 
-app.use(cors(corsOptions));
+// app.use(cors(corsOptions));
+app.use(cors());
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
 
 // Serving static file
-app.use(express.static(path.join(__dirname, "..", "client", "dist")));
+// app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 
 // Development APIs logging middleware
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
@@ -46,9 +47,9 @@ app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/product", productRoutes);
 
 // Serve frontend for any other route
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "..", "client", "dist", "index.html"));
-});
+// app.get("*", (req, res) => {
+//   res.sendFile(path.join(__dirname, "..", "client", "dist", "index.html"));
+// });
 
 // 404 error handler for all other routes
 app.all("*", (req, res, next) =>

@@ -26,3 +26,7 @@ exports.login = catchAsync(async (req, res, next) => {
   user.password = undefined;
   res.status(200).json({ status: "success", user });
 });
+
+exports.logout = catchAsync(async (req, res, next) => {
+  res.status(200).json({ status: "success" });
+});
