@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
-const API_URL = "https://raviranjan-flipkart-server.vercel.app";
+const API_URL = import.meta.env.VITE_API_URL;
 
 export const userApi = createApi({
   reducerPath: "userApi",
