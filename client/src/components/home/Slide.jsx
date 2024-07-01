@@ -4,6 +4,7 @@ import Countdown from "react-countdown";
 
 import { Box, Button, Divider, Typography, styled } from "@mui/material";
 import { useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 
 const responsive = {
   desktop: {
@@ -86,20 +87,26 @@ const Slide = ({ products, title, timer }) => {
         keyBoardControl={true}
       >
         {products?.map((product, index) => (
-          <Box key={index} textAlign='center' sx={{ padding: "25px 15px" }}>
-            <img
-              src={product.url}
-              alt='product'
-              style={{ width: "auto", height: "150px" }}
-            />
-            <Text sx={{ fontWeight: 600, color: "#212121" }}>
-              {product.title?.shortTitle}
-            </Text>
-            <Text sx={{ color: "green" }}>{product.discount}</Text>
-            <Text sx={{ color: "#212121", opacity: 0.6 }}>
-              {product.tagline}
-            </Text>
-          </Box>
+          <Link
+            to={`/product/${product.id}`}
+            key={index}
+            style={{ textDecoration: "none" }}
+          >
+            <Box textAlign='center' sx={{ padding: "25px 15px" }}>
+              <img
+                src={product.url}
+                alt='product'
+                style={{ width: "auto", height: "150px" }}
+              />
+              <Text sx={{ fontWeight: 600, color: "#212121" }}>
+                {product.title?.shortTitle}
+              </Text>
+              <Text sx={{ color: "green" }}>{product.discount}</Text>
+              <Text sx={{ color: "#212121", opacity: 0.6 }}>
+                {product.tagline}
+              </Text>
+            </Box>
+          </Link>
         ))}
       </Carousel>
     </Components>

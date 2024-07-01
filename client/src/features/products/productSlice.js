@@ -4,7 +4,7 @@ const productSlice = createSlice({
   name: "products",
   initialState: {
     products: [],
-    selectedProduct: null,
+    product: {},
     filter: "",
     sort: "asc",
   },
@@ -12,9 +12,12 @@ const productSlice = createSlice({
     setProducts(state, action) {
       state.products = action.payload;
     },
+    setProduct(state, action) {
+      state.product = action.payload;
+    },
   },
 });
 
-export const { setProducts } = productSlice.actions;
+export const { setProducts, setProduct } = productSlice.actions;
 
 export default productSlice.reducer;
