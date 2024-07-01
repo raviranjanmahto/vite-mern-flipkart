@@ -7,6 +7,8 @@ import { setProducts } from "../../features/products/productSlice";
 import Banner from "./Banner";
 import NavBar from "./NavBar";
 import Slide from "./Slide";
+import MidSlide from "./MIdSlide";
+import MidSection from "./MidSection";
 
 const Home = () => {
   // Use the useDispatch hook to get the dispatch function from the Redux store
@@ -28,6 +30,9 @@ const Home = () => {
       <NavBar />
       <Banner />
       <Slide products={products} title='Deals of the day' timer />
+      <MidSlide products={products} title='Discount on top brands' timer />
+      <MidSection />
+      <Slide products={products} title='Deals of the day' />
     </>
   );
 };
