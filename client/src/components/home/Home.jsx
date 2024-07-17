@@ -29,10 +29,10 @@ const Home = () => {
     <>
       <NavBar />
       <Banner />
-      <Slide products={products} title='Deals of the day' timer />
-      <MidSlide products={products} title='Discount on top brands' timer />
+      <Slide products={products} title="Deals of the day" timer />
+      <MidSlide products={products} title="Discount on top brands" timer />
       <MidSection />
-      <Slide products={products} title='Deals of the day' />
+      <Slide products={products} title="Deals of the day" />
     </>
   );
 };

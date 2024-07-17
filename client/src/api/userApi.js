@@ -11,6 +11,7 @@ export const userApi = createApi({
         url: "login",
         method: "POST",
         body: credentials,
+        credentials: "include", // Include credentials in requests
       }),
     }),
     signupUser: builder.mutation({
@@ -18,12 +19,14 @@ export const userApi = createApi({
         url: "signup",
         method: "POST",
         body: credentials,
+        credentials: "include", // Include credentials in requests
       }),
     }),
     logoutUser: builder.mutation({
       query: () => ({
         url: "logout",
         method: "POST",
+        credentials: "include", // Include credentials in requests
       }),
     }),
   }),
