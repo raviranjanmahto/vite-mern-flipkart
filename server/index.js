@@ -9,6 +9,7 @@ const productRoutes = require("./routes/productRoutes");
 const errorGlobalMiddleware = require("./middlewares/errorMiddleware");
 const AppError = require("./utils/appError");
 const dbConnect = require("./config/dbConnect");
+const cookieParser = require("cookie-parser");
 
 const port = process.env.PORT || 7007;
 
@@ -19,13 +20,16 @@ const corsOptions = {
   origin: "https://raviranjan-flipkart.vercel.app",
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true, // Allow credentials
 };
 
-// app.use(cors(corsOptions));
-app.use(cors());
+app.use(cors(corsOptions));
 
 // Body parser, reading data from body into req.body
 app.use(express.json({ limit: "10kb" }));
+
+// Parse cookies from requests
+app.use(cookieParser());
 
 // Serving static file
 // app.use(express.static(path.join(__dirname, "..", "client", "dist")));
@@ -38,9 +42,10 @@ dbConnect(process.env.DATABASE_URI);
 
 // health check
 app.get("/", (req, res) => {
-  res
-    .status(200)
-    .json({ status: "success", message: "Server is listening..." });
+  res.status(200).json({
+    status: "success",
+    message: "Server is up and running...",
+  });
 });
 
 app.use("/api/v1/auth", authRoutes);
