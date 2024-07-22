@@ -123,8 +123,8 @@ const LoginDialog = ({ open, setOpen }) => {
       PaperProps={{ sx: { maxWidth: "unset" } }}
     >
       <Component>
-        <Box className='imgLogin'>
-          <Typography variant='h5'>{`${
+        <Box className="imgLogin">
+          <Typography variant="h5">{`${
             toggle ? "Login" : "Looks like you're new here!"
           }`}</Typography>
           <Typography>
@@ -136,72 +136,72 @@ const LoginDialog = ({ open, setOpen }) => {
           </Typography>
         </Box>
         {toggle ? (
-          <Box className='lgnText' onChange={handleLoginChange}>
+          <Box className="lgnText" onChange={handleLoginChange}>
             <TextField
-              variant='standard'
-              name='email'
+              variant="standard"
+              name="email"
               required
-              label='Enter Email/Mobile number'
+              label="Enter Email/Mobile number"
             />
             <TextField
-              variant='standard'
-              name='password'
-              type='password'
+              variant="standard"
+              name="password"
+              type="password"
               required
-              label='Enter Password'
+              label="Enter Password"
             />
-            <Typography className='text'>
+            <Typography className="text">
               By continuing, you agree to Flipkart&apos;s Terms of Use and
               Privacy Policy.
             </Typography>
             <Button
-              className='btnLogin'
+              className="btnLogin"
               disabled={isLoggingLoading}
               onClick={handleLogin}
             >
               Login
             </Button>
             <Typography style={{ textAlign: "center" }}>OR</Typography>
-            <Typography className='createAcc' onClick={() => setToggle(false)}>
+            <Typography className="createAcc" onClick={() => setToggle(false)}>
               New to Flipkart? Create an account
             </Typography>
           </Box>
         ) : (
-          <Box className='lgnText' onChange={handleChange}>
+          <Box className="lgnText" onChange={handleChange}>
             <TextField
-              variant='standard'
-              name='fName'
+              variant="standard"
+              name="fName"
               required
-              label='Enter First name'
+              label="Enter First name"
             />
             <TextField
-              variant='standard'
-              name='lName'
-              label='Enter Last name'
+              variant="standard"
+              name="lName"
+              label="Enter Last name"
             />
             <TextField
-              variant='standard'
-              name='email'
-              label='Enter Email'
+              variant="standard"
+              name="email"
+              label="Enter Email"
               required
             />
             <TextField
-              variant='standard'
-              name='password'
-              type='password'
-              label='Enter Password'
+              variant="standard"
+              name="password"
+              type="password"
+              label="Enter Password"
               required
             />
 
             <Button
-              className='btnLogin'
+              className="btnLogin"
               disabled={isSignupLoading}
               onClick={handleSignUp}
             >
               Continue
             </Button>
             <Typography style={{ textAlign: "center" }}>OR</Typography>
-            <Typography className='createAcc' onClick={() => setToggle(true)}>
+            <Typography className="createAcc" onClick={() => setToggle(true)}>
               Existing User? Log in
             </Typography>
           </Box>
