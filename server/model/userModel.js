@@ -1,5 +1,7 @@
 const mongoose = require("mongoose");
 const bcrypt = require("bcryptjs");
+const crypto = require("crypto");
+const AppError = require("../utils/appError");
 
 const userSchema = new mongoose.Schema(
   {
@@ -42,6 +44,31 @@ const userSchema = new mongoose.Schema(
     //     message: "Passwords are not the same!",
     //   },
     // },
+    passwordResetToken: String,
+    passwordResetExpires: Date,
+    role: {
+      type: String,
+      enum: ["user", "admin"],
+      default: "user",
+    },
+    emailVerificationToken: {
+      type: String,
+      select: false, // Hide email verification token in queries
+    },
+    emailVerificationExpires: {
+      type: Date,
+      select: false, // Hide email verification expiration in queries
+    },
+    emailVerified: {
+      type: Boolean,
+      default: false,
+      select: false,
+    },
+    active: {
+      type: Boolean,
+      default: true,
+      select: false,
+    },
   },
   { timestamps: true }
 );
@@ -64,10 +91,40 @@ userSchema.methods.comparePassword = async function (candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };
 
+// Only find active users
+userSchema.pre(/^find/, async function (next) {
+  this.find({ active: { $ne: false } });
+  next();
+});
+
+userSchema.methods.createToken = function (type, next) {
+  // Generate a random token
+  const token = crypto.randomBytes(32).toString("hex");
+
+  // Create a unique hash based on the token string alone
+  const hashedToken = crypto.createHash("sha256").update(token).digest("hex");
+
+  // Set token and expiry based on the type
+  if (type === "passwordReset") {
+    this.passwordResetToken = hashedToken;
+    this.passwordResetExpires = Date.now() + 10 * 60 * 1000; // Token expires in 10 minutes
+    return token;
+  } else if (type === "emailVerification") {
+    this.emailVerificationToken = hashedToken;
+    this.emailVerificationExpires = Date.now() + 24 * 60 * 60 * 1000; // Token expires in 24 hours
+    return token;
+  } else {
+    return next(new AppError("Invalid token type: " + type, 400));
+  }
+};
+
 // Virtual to hide certain fields when converting to JSON
 userSchema.methods.toJSON = function () {
   const userObject = this.toObject();
   delete userObject.password;
+  delete userObject.role;
+  delete userObject.verified;
+  delete userObject.active;
   delete userObject.__v;
   return userObject;
 };

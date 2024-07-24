@@ -3,21 +3,21 @@ const express = require("express");
 const path = require("path");
 const morgan = require("morgan");
 const cors = require("cors");
+const cookieParser = require("cookie-parser");
 
 const authRoutes = require("./routes/userRoute");
 const productRoutes = require("./routes/productRoutes");
 const errorGlobalMiddleware = require("./middlewares/errorMiddleware");
 const AppError = require("./utils/appError");
 const dbConnect = require("./config/dbConnect");
-const cookieParser = require("cookie-parser");
 
 const port = process.env.PORT || 7007;
 
 const app = express();
 
-// Allow requests from specific origins (replace with your Netlify domain)
+// Allow requests from specific origins
 const corsOptions = {
-  origin: "https://raviranjan-flipkart.vercel.app",
+  origin: ["https://raviranjan-flipkart.vercel.app", "http://localhost:5173"],
   methods: ["GET", "POST", "PATCH", "PUT", "DELETE"],
   allowedHeaders: ["Content-Type", "Authorization"],
   credentials: true, // Allow credentials
@@ -30,9 +30,6 @@ app.use(express.json({ limit: "10kb" }));
 
 // Parse cookies from requests
 app.use(cookieParser());
-
-// Serving static file
-// app.use(express.static(path.join(__dirname, "..", "client", "dist")));
 
 // Development APIs logging middleware
 if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
@@ -50,11 +47,6 @@ app.get("/", (req, res) => {
 
 app.use("/api/v1/auth", authRoutes);
 app.use("/api/v1/product", productRoutes);
-
-// Serve frontend for any other route
-// app.get("*", (req, res) => {
-//   res.sendFile(path.join(__dirname, "..", "client", "dist", "index.html"));
-// });
 
 // 404 error handler for all other routes
 app.all("*", (req, res, next) =>
