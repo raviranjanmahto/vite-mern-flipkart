@@ -88,7 +88,7 @@ const Slide = ({ products, title, timer }) => {
       >
         {products?.map((product, index) => (
           <Link
-            to={`/product/${product.id}`}
+            to={`/product/${product._id}`}
             key={index}
             style={{ textDecoration: "none" }}
           >
